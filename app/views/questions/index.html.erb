@@ -1,0 +1,8 @@
+<% provide :page_title, "Questions" %>
+<%= currently_at current_page = "Questions"%>
+
+<h1 class = "mb-4">Questions</h1>
+
+<%= link_to 'New Question' , new_question_path , class: 'btn btn-primary btn-lg mb-3' %>
+
+<%= render @questions%>
