@@ -3,14 +3,15 @@ class QuestionsController < ApplicationController
 
   # GET /questions or /questions.json
   def index
-    @questions = Question.all
+    @pagy, @questions = pagy Question.all.order(created_at: :desc)
+
   end
 
   # GET /questions/1 or /questions/1.json
   def show
     @answer = @question.answers.build
-    @answers = @question.answers.order(created_at: :desc)
-    @answers = Answer.where(question: @question).order(created_at: :desc)
+    @pagy, @answers = pagy @question.answers.order(created_at: :desc)
+    # @answers = Answer.where(question: @question).order(created_at: :desc)
   end
 
   # GET /questions/new
