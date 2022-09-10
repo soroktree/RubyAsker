@@ -13,6 +13,8 @@ gem 'faker', '~> 2'
 
 gem 'pagy'
 
+gem 'draper'
+
 
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", "~> 1.4"
