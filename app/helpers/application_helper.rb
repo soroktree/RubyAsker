@@ -1,6 +1,14 @@
 module ApplicationHelper
     include Pagy::Frontend
     
+    def user_name_or_email(user)
+        if user.name.present?
+            user.name
+        else
+            user.email.split('@')[0]
+        end
+    end
+
     def nav_tab(title, url, options = {})
         current_page = options[:current_page]
 
