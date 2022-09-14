@@ -7,9 +7,9 @@ class SessionsController < ApplicationController
 
     def create
         user = User.find_by email: params[:email]
-
         if user&.authenticate(params[:password])
             sign_in user 
+            remeber(user) if params[:remeber_me] == '1'
             flash[:success] = "Welcome to rhe app, #{current_user.name_or_email}!"
             redirect_to root_path
         else

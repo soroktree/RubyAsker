@@ -1,10 +1,7 @@
 <article class="card my-3">
   <section class="card-header">
-    <% if question.user.name.present? %>
-        <%=question.user.name%>
-    <% else %>
-        <%=question.user.email.split('@')[0]%>
-    <%end%>
+    <%= user_name_or_email question %>
+
     <div class="card-body">
       <h4><%= question.title %></h4>
 

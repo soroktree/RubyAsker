@@ -4,8 +4,32 @@ module Authentication
     included do 
         private 
 
+        def remember(user)   
+            user.remember_me
+            cookies.encrypted.permanent[:remember_token] = user.remember_token
+            cookies.encrypted.permanent[:user_id] = user.id
+        end
+
+        def forget(user)
+            user.forget_me 
+            cookies.delete :remember_token 
+            cookies.delete :user_id 
+        end
+
         def current_user
-            @current_user ||= User.find_by(id: session[:user_id]).decorate if session[:user_id].present?
+            if session[:user_id].present?
+                @current_user ||= User.find_by(id: session[:user_id]).decorate
+            elsif cookies.encrypted[:user_id].present?
+                user_from_token
+            end
+        end
+
+        def user_from_token
+            user = User.find_by(id: cookies.encrypted[:user_id])
+            if user&.authenticated?(cookies.encrypted[:remember_token])
+                sign_in(user)
+                @current_user ||= user.decorate
+            end
         end
 
         def sign_in(user)
@@ -13,6 +37,7 @@ module Authentication
         end
 
         def sign_out
+            forget current_user
             session.delete :user_id 
         end
     
