@@ -2,12 +2,12 @@ Rails.application.routes.draw do
   resource :session, only: %i[new create destroy]
 
   resources :questions do
-    resources :comments, only: %i[create destroy]
+    resources :commentquestions
     resources :answers, except: %i[new show]
   end
 
   resources :answers, except: %i[new show] do
-    resources :comments, only: %i[create destroy]
+    resources :commentanswers, only: %i[create destroy]
   end
 
   resources :users, only: %i[new create edit update]

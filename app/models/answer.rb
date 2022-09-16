@@ -1,5 +1,5 @@
 class Answer < ApplicationRecord
-  include Commentable
+  has_many :commentanswers
   belongs_to :question
   belongs_to :user
 

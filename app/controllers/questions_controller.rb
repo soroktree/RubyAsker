@@ -1,17 +1,18 @@
 class QuestionsController < ApplicationController
   before_action :set_question, only: %i[ show edit update destroy ]
+  before_action :fetch_tags, only: %i[new edit]
 
   # GET /questions or /questions.json
   def index
-    @pagy, @questions = pagy Question.all.order(created_at: :desc)
-
+    # @pagy, @questions = pagy Question.includes(:user, :question_tags, :tags).
+    @pagy, @questions = pagy Question.all_by_tags(params[:tag_ids])
   end
 
   # GET /questions/1 or /questions/1.json
   def show
     @answer = @question.answers.build
+    @commentquestions = @question.commentquestions.build
     @pagy, @answers = pagy @question.answers.order(created_at: :desc)
-    # @answers = Answer.where(question: @question).order(created_at: :desc)
   end
 
   # GET /questions/new
@@ -60,6 +61,10 @@ class QuestionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def question_params
-      params.require(:question).permit(:title, :body, :user_id)
+      params.require(:question).permit(:title, :body, tag_ids: [])
+    end
+
+    def fetch_tags
+      @tags = Tag.all 
     end
 end

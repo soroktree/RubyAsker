@@ -1,10 +1,9 @@
-<%= link_to t('questions.show.comments'), "##{html_id}",
+<%= link_to t('answers.show.commentanswers'), "##{html_id}",
     class: 'btn btn-primary', data: {'bs-toggle': 'collapse'} %>
-
 <%= tag.div class: 'collapse', id: html_id do%>
-    <%= form_with model: [commentable, (@comment || commentable.comments.build)],
+    <%= form_with model: [answer, commentanswer],
     class: 'pt-3 border-top my-2' do |f|%>
-    <%= render 'shared/errors', object: @comment%>
+    <%= render 'shared/errors', object: @commentanswer%>
 
     <div class="mb-3 row">
         <div class="col-sm-2 col-form-label">
@@ -20,6 +19,8 @@
 
     <% end %>
 
-    <%= render commentable.comments.decorate %>
+    <%# <%= render partial: 'commentquestions/commentquestion', 
+        locals: { commentquestion: @answer.commentanswers  } %> %>
+    <%# # @answer.commentasnwers %> %> %>
 
 <% end %>
