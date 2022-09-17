@@ -18,7 +18,13 @@ module Authentication
 
         def current_user
             if session[:user_id].present?
-                @current_user ||= User.find_by(id: session[:user_id]).decorate
+                unless  @current_user = User.find_by(id: session[:user_id])
+                    session.delete :user_id 
+                    cookies.delete :remember_token 
+                    cookies.delete :user_id 
+                else
+                    @current_user.decorate
+                end
             elsif cookies.encrypted[:user_id].present?
                 user_from_token
             end
@@ -42,7 +48,7 @@ module Authentication
         end
     
         def user_signed_in?
-            current_user.present? 
+            current_user.present?
         end
 
         def require_authentication

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resource :session, only: %i[new create destroy]
+  resources :users, only: %i[new create edit update]
 
   resources :questions do
     resources :commentquestions
@@ -10,9 +11,9 @@ Rails.application.routes.draw do
     resources :commentanswers, only: %i[create destroy]
   end
 
-  resources :users, only: %i[new create edit update]
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+   namespace :admin do 
+      resources :users, only: %i[index edit delete destroy update]
+  end
 
-  # Defines the root path route ("/")
   root "pages#index"
 end

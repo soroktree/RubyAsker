@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
     include Pagy::Backend
     include Authentication
-    # include ErrorHandling
+    include Authorization
+    include ErrorHandling
 end

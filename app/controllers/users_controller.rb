@@ -3,6 +3,9 @@ class UsersController < ApplicationController
   before_action :require_authentication, only: %i[edit update]
   before_action :set_user!, only: %i[edit update]
 
+  before_action :authorize_user!
+  after_action :verify_authorized 
+
   def new
     @user = User.new
   end
@@ -31,10 +34,14 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email, :name, :password, :password_confirmation,)
+    params.require(:user).permit(:email, :name, :password, :password_confirmation)
   end
 
   def set_user!
     @user = User.find params[:id]
+  end
+
+  def authorize_user!
+      authorize ( @user || User )
   end
 end

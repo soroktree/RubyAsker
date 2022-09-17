@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+    attr_accessor :admin_edit
+    enum role: { basic: 0, moderator: 1, admin: 2 }, _suffix: :role 
     attr_accessor :remember_token
 
     has_secure_password
@@ -7,6 +9,14 @@ class User < ApplicationRecord
     has_many :answers, dependent: :destroy
 
     validates :email, presence: true, uniqueness: true
+
+    def author?(obj)
+        obj.user == self 
+    end
+
+    def guest?
+        false
+    end
 
     def remeber_me
         self.remember_token = SecureRandom.urlsafe_base64
@@ -28,6 +38,5 @@ class User < ApplicationRecord
             min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
         BCrypt::Password.create(string, cost: cost)    
     end
-
 
 end
