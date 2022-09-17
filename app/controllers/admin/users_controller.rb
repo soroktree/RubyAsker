@@ -1,9 +1,10 @@
 
     class Admin::UsersController < ApplicationController
-        before_action :require_authentication
+        # before_action :require_authentication
         before_action :set_user!, only: %i[edit update destroy]
-        # before_action :authorize_user!
-        # after_action :verify_authorized
+
+        before_action :authorize_user!
+        after_action :verify_authorized
 
         def index 
             @users = User.order(created_at: :desc)
@@ -40,6 +41,10 @@
             params.require(:user).
                 permit(:email, :name, :password_confirmation, :role).
                 merge(admin_edit: true)
+        end
+
+        def authorize_user!
+            authorize([:admin, (@user || User)])  
         end
     end
 
