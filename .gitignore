@@ -38,3 +38,5 @@
 !/app/assets/builds/.keep
 
 /node_modules
+/config/app_env_variables.rb
+/config/app_environment_variables.rb

@@ -1,5 +1,18 @@
+
+# require 'sidekiq/web'
+
+# class AdminConstraint 
+#   def matches?(request)
+#     user_id = request.session[:user_id] || request.cookie_jar.encrypted[:user_id]
+#   end
+# end
+
 Rails.application.routes.draw do
+  mount Sidekiq::Web => '/sidekiq'
+
   resource :session, only: %i[new create destroy]
+  resource :reset_password, only: %i[new create edit update]
+
   resources :users, only: %i[new create edit update]
 
   resources :questions do
@@ -12,7 +25,7 @@ Rails.application.routes.draw do
   end
 
    namespace :admin do 
-      resources :users, only: %i[index edit delete destroy update]
+      resources :users, only: %i[index create edit update destroy]
   end
 
   root "pages#index"

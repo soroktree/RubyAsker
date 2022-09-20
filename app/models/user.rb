@@ -1,7 +1,9 @@
 class User < ApplicationRecord
+    include Recoverable
+    include Rememberable
+
     attr_accessor :admin_edit
     enum role: { basic: 0, moderator: 1, admin: 2 }, _suffix: :role 
-    attr_accessor :remember_token
 
     has_secure_password
     
@@ -18,18 +20,10 @@ class User < ApplicationRecord
         false
     end
 
-    def remeber_me
-        self.remember_token = SecureRandom.urlsafe_base64
-        update_column :remember_token_digest, digest(remember_token)
-    end
-
     def authenticated?(remember_token)
         BCrypt::Password.new(remember_token_digest) == remember_token
     end
         # BCrypt::Password.new(remember_token_digest).is_password?(remember_token)
-    def forget_me 
-        update_column :remeber_token_digest, nil
-    end
 
     private
 

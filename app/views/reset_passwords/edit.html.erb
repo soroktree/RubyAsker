@@ -1,0 +1,32 @@
+<% provide :page_title, 'Edit password' %>
+<% currently_at 'Sign In' %>
+
+<h1 class="mb-4"><%= 'Edit password' %></h1>
+
+<%= render 'shared/errors', object: @user %>
+<%= form_with model: @user, url: reset_password_path, method: :patch do |f| %>
+  <%= f.hidden_field :reset_password_token, value: @user.reset_password_token %>
+  <%= f.hidden_field :email, value: @user.email %>
+
+  <div class="mb-3 row">
+    <div class="col-sm-2 col-form-label">
+      <%= f.label :password %>
+    </div>
+
+    <div class="col-sm-10">
+      <%= f.password_field :password, class: 'form-control form-control-lg' %>
+    </div>
+  </div>
+
+  <div class="mb-3 row">
+    <div class="col-sm-2 col-form-label">
+      <%= f.label :password_confirmation %>
+    </div>
+
+    <div class="col-sm-10">
+      <%= f.password_field :password_confirmation, class: 'form-control form-control-lg' %>
+    </div>
+  </div>
+
+  <%= f.submit 'submit', class: 'btn btn-primary btn-lg' %>
+<% end %> 
